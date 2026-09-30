@@ -56,6 +56,9 @@ namespace draco::nexus
         private:
             T data;
             LinkNode *next;
-        }
+        };
     };
+
+class stack
+
 }
