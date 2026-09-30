@@ -18,6 +18,7 @@ namespace draco::nexus
         {
             tail->next = new LinkNode(nextData);
             tail = tail->next;
+            this->length++;
             return *this;
         }
 
@@ -28,10 +29,46 @@ namespace draco::nexus
         }
 
         // 合并两个链表 重载运算符+ 返回一个新链表
-        LinkList &operator+(LinkList &other)
+        LinkList operator+(LinkList &other) const
         {
             LinkList mergedList();
-            return
+            // 为什么这里要开在栈上：CPP有RVO返回值优化，直接
+            LinkNode *curNode = this->head;
+            LinkNode *curNodeCopy = mergedList.head;
+            LinkNode * lastNodeCopy = this->head;
+
+            while (curNode != nullptr)
+            {
+                if (curNodeCopy = nullptr)
+                {
+                    curNodeCopy = new LinkNode;
+                }
+
+                *curNodeCopy = *curNode;
+
+                curNode = curNode->next;
+                lastNodeCopy = curNodeCopy;
+                curNodeCopy = curNodeCopy->next;
+            }
+
+            curNode = other.head->next;
+
+            while (curNode != nullptr)
+            {
+                if (curNodeCopy = nullptr)
+                {
+                    curNodeCopy = new LinkNode;
+                }
+
+                *curNodeCopy = *curNode;
+
+                curNode = curNode->next;
+                curNodeCopy = curNodeCopy->next;
+            }
+            mergedList.length = this->length + other.length;
+            mergedList.tail
+
+            return mergedList;
         }
 
     private:
@@ -39,23 +76,10 @@ namespace draco::nexus
         LinkList *head;
         LinkList *tail;
 
-        class LinkNode
+        struct LinkNode
         {
-        public:
-            LinkNode(T data)
-            {
-                this->data = data;
-                this->next = nullptr;
-            }
-            LinkNode()
-            {
-                this->data = NULL;
-                this->next = nullptr;
-            }
-
-        private:
-            T data;
             LinkNode *next;
-        }
+            T data;
+        };
     };
 }
