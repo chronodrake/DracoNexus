@@ -56,7 +56,15 @@ namespace draco::nexus
         ~LinkList()
         {
             LinkNode curNode = this->head;
-            LinkNode nextNode = this->head->next;
+
+            if(curNode != nullptr){
+                LinkNode nextNode = this->head->next;
+            }
+            else
+            {
+                nextNode = nullptr;
+            }
+
         
             while(curNode != nullptr)
             {
@@ -88,6 +96,20 @@ namespace draco::nexus
             this->swap(tmp);
             return *this;
         }
+
+        // 移动赋值
+        LinkList & operator=(LinkList && other) const
+        {
+            this->length = other.length;
+            this->tail = other.tail;
+            this->head = other.head;
+
+            other.head = nullptr;
+            other.tail = nullptr;
+            other.length = 0;
+
+            return *this;
+        } 
 
         // 拷贝添加链表元素
         LinkList &append(T nextData)
@@ -173,6 +195,36 @@ namespace draco::nexus
         LinkList & operator+=(LinkList & other) const
         {
             return this->merge(other);
+        }
+
+        T & operator[](int index)
+        {
+
+        #ifdef OPEN
+             if(index + 1 > length || index + 1 < 1)
+             {
+                throw("index_out_of_range")
+             }
+        #endif
+
+            if(this->head != nullptr && this->head->next != nullptr)
+            {
+                LinkList curNode = this->head->next;
+    
+                for(int i = 0;i < length + 1;i++)
+                {
+                    curNode = curNode->next;
+                }
+
+                return curNode->data;
+            }
+        
+        #ifdef OPEN
+            else
+            {
+                throw();
+            }
+        #endif
         }
 
     private:
